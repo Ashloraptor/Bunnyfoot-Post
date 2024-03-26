@@ -16,8 +16,9 @@ const userSchema = new Schema(
             required: true,
             //Must match a valid email address (look into Mongoose's matching validation)
         },
-        thoughts: [thoughtSchema],
-        friends: [userSchema]
+        thoughts: [thoughtSchema]
+        // , ReferenceError: Cannot access 'userSchema' before initialization
+        // friends: [userSchema]
     }
 );
 
