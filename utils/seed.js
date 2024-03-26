@@ -24,9 +24,9 @@ connection.once('open', async () => {
     for (let i = 0; i < 20; i++) {
         // Get some random post objects using a helper function that we imported from ./data
         const posts = getRandomPosts(20);
-        const name = getRandomName();
-        students.push({
-            name,
+        const username = getRandomName();
+        users.push({
+            username,
             posts,
         });
     }

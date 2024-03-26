@@ -10,16 +10,21 @@ const userSchema = new Schema(
             required: true,
             trimmed: true,
         },
-        email: {
-            type: String,
-            unique: true,
-            required: true,
-            //Must match a valid email address (look into Mongoose's matching validation)
-        },
+        // email: {
+        //     type: String,
+        //     unique: true,
+        //     required: true,
+        //     //Must match a valid email address (look into Mongoose's matching validation)
+        // },
         thoughts: [thoughtSchema]
         // , ReferenceError: Cannot access 'userSchema' before initialization
         // friends: [userSchema]
-    }
+    },
+    {
+        toJSON: {
+          getters: true,
+        },
+      }
 );
 
 const User = model('user', userSchema);

@@ -5,6 +5,11 @@ const names = [
     'Mipha',
     'Urbosa',
     'Daruk',
+    'Teba',
+    'Tulin',
+    'Sidon',
+    'Riju',
+    'Yunobo',
     'Purah',
     'Robbie',
     'Malon',
@@ -12,6 +17,7 @@ const names = [
     'Ruta',
     'Naboru',
     'Impa',
+    'Paya',
 ];
 
 const postDescriptions = [
@@ -22,14 +28,22 @@ const postDescriptions = [
     'Horseback Racing',
     'Hiking',
     'Spelunking',
-    'Fishing'
+    'Fishing',
+    'Bow Hunting',
+    'Monster Hunting',
+    'Cooking',
+    'Flight Training',
+    'Visit the Library',
 ];
+
+// Get a random item given an array
+const getRandomArrItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
 // Gets a random full name
 const getRandomName = () =>
   `${getRandomArrItem(names)}`;
 
-  // Function to generate random assignments that we can add to student object.
+  // Function to generate random posts that we can add to user object.
 const getRandomPosts = (int) => {
     const results = [];
     for (let i = 0; i < int; i++) {
