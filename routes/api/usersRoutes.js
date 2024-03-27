@@ -8,16 +8,16 @@ const {
     removeThought,
 } = require('../../controllers/userController');
 
-// /api/user
+// /api/users
 router.route('/').get(getUsers).post(createUser);
 
-// /api/user/:userId
+// /api/users/:userId
 router.route('/:userId').get(getSingleUser).delete(deleteUser);
 
-// /api/user/:userId/thought
+// /api/users/:userId/thought
 router.route('/:userId/thought').post(addThought);
 
-// /api/user/:studentId/thought/:thoughtId
+// /api/users/:studentId/thought/:thoughtId
 router.route(':studentId/thought/:thoughtId').delete(removeThought);
 
 module.exports = router;

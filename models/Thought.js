@@ -1,5 +1,7 @@
-const { Schema, Types } = require('mongoose');
+const { Schema, model } = require('mongoose');
+// const { Schema, Types } = require('mongoose');
 
+// Schema to create a thought model
 const thoughtSchema = new Schema(
     {
         thoughtText: {
@@ -13,21 +15,31 @@ const thoughtSchema = new Schema(
             default: Date.now,
             //Use a getter method to format the timestamp on query
         },
-        username:{
-            type: String,
-            required: true,
-        }
+        // username:{
+        //     type: String,
+        //     required: true,
+        // }
+        users: [
+            {
+                type: Schema.Types.ObjectID,
+                ref: 'user',
+            },
+        ],
         // ,
         // reactions:[reactionSchema],
     },
     {
         toJSON: {
-          getters: true,
+          virtuals: true,
         },
         id: false,
       }
 );
 
+// const Thought = model('thought', thoughtSchema);
+
+// module.exports = Thought;
 module.exports = thoughtSchema;
+// module.exports.thoughtSchema = thoughtSchema;
 
 //Schema Settings: This will not be a model, but rather will be used as the reaction field's subdocument schema in the Thought model.

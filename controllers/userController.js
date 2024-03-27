@@ -57,31 +57,76 @@ module.exports = {
         }
     },
 
-      // Delete a user and remove them
-  async deleteUser(req, res) {
-    try {
-      const user = await User.findOneAndRemove({ _id: req.params.userId });
+    // Delete a user and remove them from the Thought
+    async deleteUser(req, res) {
+        try {
+            const user = await User.findOneAndRemove({ _id: req.params.userId });
 
-      if (!user) {
-        return res.status(404).json({ message: 'No such user exists' });
-      }
+            if (!user) {
+                return res.status(404).json({ message: 'No such user exists' });
+            }
 
-    //   const course = await Course.findOneAndUpdate(
-    //     { students: req.params.studentId },
-    //     { $pull: { students: req.params.studentId } },
-    //     { new: true }
-    //   );
+            const thought = await Thought.findOneAndUpdate(
+                { users: req.params.userId },
+                { $pull: { users: req.params.userId } },
+                { new: true }
+            );
 
-    //   if (!course) {
-    //     return res.status(404).json({
-    //       message: 'Student deleted, but no courses found',
-    //     });
-    //   }
+            if (!thought) {
+                return res.status(404).json({
+                    message: 'User deleted, but no thoughts found',
+                });
+            }
 
-      res.json({ message: 'User successfully deleted' });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json(err);
-    }
-  },
+            res.json({ message: 'User successfully deleted' });
+        } catch (err) {
+            console.log(err);
+            res.status(500).json(err);
+        }
+    },
+
+    //Add a thought to a user
+    async addThought(req, res) {
+        console.log('You are adding a thought');
+        console.log(req.body);
+
+        try {
+            const user = await User.findOneAndUpdate(
+                { _id: req.params.userId },
+                { $addToSet: { assignments: req.body } },
+                { runValidators: true, new: true }
+            );
+
+            if (!user) {
+                return res
+                    .status(404)
+                    .json({ message: 'Bunnyfoot could not find a user with that ID' });
+            }
+
+            res.json(user);
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    },
+
+    // Remove thought from a user
+    async removeThought(req, res) {
+        try {
+            const user = await User.findOneAndUpdate(
+                { _id: req.params.userId },
+                { $pull: { assignment: { assignmentId: req.params.assignmentId } } },
+                { runValidators: true, new: true }
+            );
+
+            if (!user) {
+                return res
+                    .status(404)
+                    .json({ message: 'Bunnyfoot could not find a user with that ID' });
+            }
+
+            res.json(user);
+        } catch (err) {
+            res.status(500).json(err);
+        }
+    },
 };
