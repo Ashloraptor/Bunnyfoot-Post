@@ -1,5 +1,6 @@
 const { Schema, model } = require('mongoose');
-const thoughtSchema = require('./Thought');
+// const thoughtSchema = require('./Thought');
+const Thought = require('./Thought');
 
 // Schema to create User model
 const userSchema = new Schema(
@@ -16,27 +17,24 @@ const userSchema = new Schema(
             required: true,
             //Must match a valid email address (look into Mongoose's matching validation)
         },
-        thoughts: [thoughtSchema],
-        // , ReferenceError: Cannot access 'userSchema' before initialization
-        // Create a virtual called friendCount that retrieves the length of the user's friends array field on query.
-        // virtuals: {
-        //     friendCount: {
-        //         get() {return `${this.friends}`;},
-        //         set(v) {
-        //             // v is the value being set, ref mongoose.com/docs/tutorials/virtuals.html
-        //             const friends = v.substring(0, v.indexOf(' '));
-        //             this.set({friends});
-        //         }
-        //     }
-        // }
+        // thoughts: [Thought],
+        thoughts: [
+            {
+              type: Schema.Types.ObjectId,
+              ref: 'Thought',
+            },
+          ],
+        //friend
+        //friendCount
     },
-    {
+    { //revision made based off of assignment 20
         toJSON: {
-          getters: true,
+          virtuals: true,
         },
+        id: false, //end revision
       }
 );
 
-const User = model('user', userSchema);
+const User = model('User', userSchema);
 
 module.exports = User;

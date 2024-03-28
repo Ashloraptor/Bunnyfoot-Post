@@ -6,7 +6,7 @@ module.exports = {
         try {
             const thoughts = await Thought.find()
                 .populate('users');
-            res.json(courses);
+            res.json(thoughts);
         } catch (err) {
             res.status(500).json(err);
         }
@@ -18,7 +18,7 @@ module.exports = {
                 .populate('users');
 
             if (!thought) {
-                return res.status(404).json({ message: 'Bunnyfoot could not find such post' })
+                return res.status(404).json({ message: 'Bunnyfoot could not find the braincell' })
             }
 
             res.json(thought);
@@ -28,9 +28,16 @@ module.exports = {
     },
 
     // Create thought
+    // Associate it with a user
     async createThought(req, res) {
         try {
             const thought = await Thought.create(req.body);
+            //*25
+            const user = await User.findOneAndUpdate(
+                { _id: req.body.userId },
+                { new: true }
+              );
+            //*25
             res.json(thought);
         } catch (err) {
             console.log(err);
@@ -43,7 +50,7 @@ module.exports = {
             const thought = await Thought.findOneAndDelete({_id: req.params.thoughtId});
 
             if(!thought) {
-                return res.status(404).json({ message: 'Bunnyfoot could not find a thought with that ID'});
+                return res.status(404).json({ message: 'Bunnyfoot lost that trail of thought'});
             }
 
             await User.deleteMany({_id: { $in: thought.users }});
@@ -62,7 +69,7 @@ module.exports = {
             );
 
             if(!thought) {
-                return res.status(404).json({ message: 'Bunnyfoot could not find a thought with this ID'});
+                return res.status(404).json({ message: 'Bunnyfoot lost that trail of thought'});
             }
             res.json(course);
         } catch (err) {
