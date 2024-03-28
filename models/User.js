@@ -24,7 +24,7 @@ const userSchema = new Schema(
               ref: 'Thought',
             },
           ],
-        //friend
+        //friends: [userSchema]
         //friendCount
     },
     { //revision made based off of assignment 20
@@ -34,6 +34,11 @@ const userSchema = new Schema(
         id: false, //end revision
       }
 );
+
+// // Create a virtual property `friendCount` that gets the amount of friends per user
+// userSchema.virtual('friendCount').get(function(){
+//     return this.friends.length;
+// });
 
 const User = model('User', userSchema);
 
