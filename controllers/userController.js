@@ -1,6 +1,7 @@
 // ObjectId() method for converting usereId string into an ObjectId for querying database
 const { ObjectId } = require('mongoose').Types;
 const { User, Thought } = require('../models');
+//addThought and removeThought
 
 // Aggregate function to get the number of users overall
 const headCount = async () => {
@@ -39,7 +40,6 @@ module.exports = {
 
             res.json({
                 user
-                // friends?
             });
         } catch (err) {
             console.log(err);
@@ -129,4 +129,52 @@ module.exports = {
             res.status(500).json(err);
         }
     },
+
+    //Add a friend
+    async addFriend(req, res) {
+        console.log('You are making friends!');
+        try{
+            const user = await User.findOneAndUpdate(
+                { _id: req.params.userId },
+                { $addToSet: { friends: req.params.friendId } },
+                { runValidators: true, new: true }
+            );
+
+            if (!user) {
+                return res
+                    .status(404)
+                    .json({ message: 'Bunnyfoot could not find a user with that ID' });
+            }
+
+            res.json(user);
+        }catch (err) {
+            res.status(500).json(err);
+        }
+    },
+
+
+    //Destroy a friendship
+    async removeFriend(req, res) {
+        console.log('You are making enemies!');
+        console.log(req.body);
+        try{
+            const user = await User.findOneAndUpdate(
+                { _id: req.params.userId },
+                { $pull: { friends: req.params.friendId } },
+                { runValidators: true, new: true }
+            );
+
+            if (!user) {
+                return res
+                    .status(404)
+                    .json({ message: 'Bunnyfoot could not find a user with that ID' });
+            }
+
+            res.json(user);
+        }catch (err) {
+            res.status(500).json(err);
+        }
+    },
+
+
 };

@@ -16,6 +16,7 @@ const userSchema = new Schema(
             unique: true,
             required: true,
             //Must match a valid email address (look into Mongoose's matching validation)
+            match: [/^([a-z0-9_.-]+)@([\da-z.-]+)\.([a-z.]{2,6})$/, "Please enter a valid email address"]
         },
         // thoughts: [Thought],
         thoughts: [
@@ -26,6 +27,12 @@ const userSchema = new Schema(
           ],
         //friends: [userSchema]
         //friendCount
+        friends: [
+          {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+          }
+        ]
     },
     { //revision made based off of assignment 20
         toJSON: {
@@ -36,9 +43,11 @@ const userSchema = new Schema(
 );
 
 // // Create a virtual property `friendCount` that gets the amount of friends per user
-// userSchema.virtual('friendCount').get(function(){
-//     return this.friends.length;
-// });
+
+userSchema
+.virtual('friendCount').get(function(){
+    return this.friends.length;
+});
 
 const User = model('User', userSchema);
 
