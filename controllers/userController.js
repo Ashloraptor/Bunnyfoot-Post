@@ -68,7 +68,7 @@ module.exports = {
 
             const thought = await Thought.findOneAndUpdate(
                 { users: req.params.userId },
-                { $pull: { users: req.params.userId } },
+                { $pull: { users: req.params.thoughts } },
                 { new: true }
             );
 
@@ -85,12 +85,25 @@ module.exports = {
         }
     },
 
-
+    //Update User
+    async updateUser(req, res) {
+        try {
+            const user = await User.findOneAndUpdate(
+                user,
+                { $set: req.body },
+                { new: true }
+            );
+            res.json({ message: "Update complete!" })
+        } catch (err) {
+            console.log(err);
+            res.status(500).json(err);
+        }
+    },
 
     //Add a friend
     async addFriend(req, res) {
         console.log('You are making friends!');
-        try{
+        try {
             const user = await User.findOneAndUpdate(
                 { _id: req.params.userId },
                 { $addToSet: { friends: req.params.friendId } },
@@ -103,8 +116,8 @@ module.exports = {
                     .json({ message: 'Bunnyfoot could not find a user with that ID' });
             }
 
-            res.json(user);
-        }catch (err) {
+            res.json({ message: "You have made friends!" });
+        } catch (err) {
             res.status(500).json(err);
         }
     },
@@ -114,7 +127,7 @@ module.exports = {
     async removeFriend(req, res) {
         console.log('You are making enemies!');
         console.log(req.body);
-        try{
+        try {
             const user = await User.findOneAndUpdate(
                 { _id: req.params.userId },
                 { $pull: { friends: req.params.friendId } },
@@ -127,8 +140,8 @@ module.exports = {
                     .json({ message: 'Bunnyfoot could not find a user with that ID' });
             }
 
-            res.json(user);
-        }catch (err) {
+            res.json({ message: "You have made enemies!" });
+        } catch (err) {
             res.status(500).json(err);
         }
     },
