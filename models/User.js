@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose');
-// const thoughtSchema = require('./Thought');
 const Thought = require('./Thought');
+// const thoughtSchema = require('./Thought');
+
 
 // Schema to create User model
 const userSchema = new Schema(
@@ -15,18 +16,17 @@ const userSchema = new Schema(
             type: String,
             unique: true,
             required: true,
-            //Must match a valid email address (look into Mongoose's matching validation)
             match: [/^([a-z0-9_.-]+)@([\da-z.-]+)\.([a-z.]{2,6})$/, "Please enter a valid email address"]
         },
-        // thoughts: [Thought],
         thoughts: [
             {
               type: Schema.Types.ObjectId,
               ref: 'Thought',
             },
+            // Thought
+            // thoughtSchema
           ],
-        //friends: [userSchema]
-        //friendCount
+        // reactions: :[reactionSchema],
         friends: [
           {
             type: Schema.Types.ObjectId,
@@ -34,19 +34,23 @@ const userSchema = new Schema(
           }
         ]
     },
-    { //revision made based off of assignment 20
+    { 
         toJSON: {
           virtuals: true,
         },
-        id: false, //end revision
+        id: false, 
       }
 );
 
-// // Create a virtual property `friendCount` that gets the amount of friends per user
-
+// Create a virtual property `friendCount` that gets the amount of friends per user
 userSchema
 .virtual('friendCount').get(function(){
     return this.friends.length;
+});
+
+// Creates a virtual property 'reactionCount' that gets the amount of reactions per thought.
+userSchema.virtual('thoughtCount').get(function(){
+  return this.thoughts.length;
 });
 
 const User = model('User', userSchema);

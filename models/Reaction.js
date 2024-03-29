@@ -1,14 +1,11 @@
 const { Schema, Types } = require('mongoose');
-// const { Schema, model } = require('mongoose');
 
 const reactionSchema = new Schema(
     {
         reactionId: {
-            // Use Mongoose's ObjectId data type
             type: Schema.Types.ObjectId,
             // Default value is set to a new ObjectId
             default: () => new Types.ObjectId(),
-            // default: [new ObjectId],
         },
         reactionBody: {
             type: String,
@@ -22,7 +19,6 @@ const reactionSchema = new Schema(
         createdAt:{
             type: Date,
             default: Date.now,
-            // Use a getter method to format the timestamp on query
         }
     },
     {
@@ -34,3 +30,5 @@ const reactionSchema = new Schema(
 )
 
 module.exports = reactionSchema;
+// const Reaction = model('Reaction', reactionSchema);
+// module.exports = Reaction;

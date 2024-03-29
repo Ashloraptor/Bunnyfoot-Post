@@ -53,9 +53,19 @@ const reactionResponses = [
 // Get a random item given an array
 const getRandomArrItem = (arr) => arr[Math.floor(Math.random() * arr.length)];
 
+//Get a random index given an array
+const genRandomIndex = (arr) => Math.floor(Math.random() * arr.length);
+
 // Gets a random full name
 const getRandomName = () =>
   `${getRandomArrItem(names)}`;
+
+// Get random friends
+//const getRandomFriends = () =>
+//  `${getRandomArrItem(names)}`
+
+// Get friendCount
+// const friendCount = check the array for getRandomFriends?
 
 // Function to generate random reactions that we can add to user object.
 const getRandomReactions = (int) => {
@@ -81,4 +91,4 @@ const getRandomReactions = (int) => {
 
 // Export the functions for use in seed.js
 module.exports = {getRandomName, getRandomReactions};
-// module.exports = {getRandomName, getRandomThoughts, getRandomReactions};
+// module.exports = {getRandomName, getRandomThoughts, getRandomReactions, getRandomFriends, genRandomIndex};
